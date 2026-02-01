@@ -1,0 +1,520 @@
+/**
+ * Mobile-First Adaptive Design Styles
+ * Provides device-specific utilities and optimizations
+ */
+
+/* ==========================================================================
+   Safe Area Insets (for notched devices)
+   ========================================================================== */
+
+:root {
+  --sat: env(safe-area-inset-top);
+  --sar: env(safe-area-inset-right);
+  --sab: env(safe-area-inset-bottom);
+  --sal: env(safe-area-inset-left);
+}
+
+/* Safe area utility classes */
+.safe-area-inset-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.pb-safe {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+.pt-safe {
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+}
+
+/* ==========================================================================
+   Touch Target Optimization
+   ========================================================================== */
+
+/* Minimum touch target size (44px as per WCAG 2.5.5) */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.touch-target-lg {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+/* Touch manipulation for faster tap response */
+.touch-action-manipulation {
+  touch-action: manipulation;
+}
+
+/* Disable text selection on interactive elements */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* ==========================================================================
+   Device-Specific Display Utilities
+   ========================================================================== */
+
+/* Mobile only (hidden on tablet and up) */
+.mobile-only {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* Tablet only */
+.tablet-only {
+  display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet-only {
+    display: block;
+  }
+}
+
+/* Desktop only (hidden on tablet and below) */
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* Tablet and up */
+.tablet-up {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .tablet-up {
+    display: block;
+  }
+}
+
+/* Mobile and tablet (hidden on desktop) */
+.tablet-down {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .tablet-down {
+    display: none !important;
+  }
+}
+
+/* Touch devices only */
+@media (hover: none) and (pointer: coarse) {
+  .touch-only {
+    display: block;
+  }
+
+  .pointer-only {
+    display: none !important;
+  }
+}
+
+/* Pointer devices only */
+@media (hover: hover) and (pointer: fine) {
+  .touch-only {
+    display: none !important;
+  }
+
+  .pointer-only {
+    display: block;
+  }
+}
+
+/* ==========================================================================
+   Mobile App-Like Behaviors
+   ========================================================================== */
+
+/* Prevent overscroll/bounce on iOS */
+.overscroll-none {
+  overscroll-behavior: none;
+}
+
+/* Enable momentum scrolling on iOS */
+.momentum-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Pull-to-refresh container */
+.pull-to-refresh {
+  overscroll-behavior-y: contain;
+}
+
+/* App-like full height */
+.app-height {
+  height: 100dvh;
+  min-height: 100dvh;
+}
+
+/* App-like viewport handling */
+.app-viewport {
+  height: 100dvh;
+  height: -webkit-fill-available;
+}
+
+/* ==========================================================================
+   Mobile Navigation Styles
+   ========================================================================== */
+
+/* Bottom nav container */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--background);
+  border-top: 1px solid var(--border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Bottom nav spacer (prevents content hiding) */
+.bottom-nav-spacer {
+  height: calc(72px + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  .bottom-nav-spacer {
+    height: 0;
+  }
+}
+
+/* ==========================================================================
+   Swipe Gesture Styles
+   ========================================================================== */
+
+/* Swipeable container */
+.swipeable {
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Horizontal swipe only */
+.swipe-horizontal {
+  touch-action: pan-x;
+}
+
+/* Vertical swipe only */
+.swipe-vertical {
+  touch-action: pan-y;
+}
+
+/* ==========================================================================
+   Mobile Card Animations
+   ========================================================================== */
+
+/* Card press effect */
+.card-press {
+  transition: transform 0.1s ease-out;
+}
+
+.card-press:active {
+  transform: scale(0.98);
+}
+
+/* Swipe reveal animation */
+@keyframes swipe-reveal {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-swipe-reveal {
+  animation: swipe-reveal 0.2s ease-out;
+}
+
+/* ==========================================================================
+   Page Transitions (App-Like)
+   ========================================================================== */
+
+/* Slide from right (forward navigation) */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.25s ease-out;
+}
+
+/* Slide from left (back navigation) */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.25s ease-out;
+}
+
+/* Slide up (modal/sheet) */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+/* Slide down (dismiss) */
+@keyframes slide-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.2s ease-in;
+}
+
+/* ==========================================================================
+   Floating Action Button Styles
+   ========================================================================== */
+
+.fab {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease-out;
+}
+
+.fab:active {
+  transform: scale(0.92);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.fab-bottom-right {
+  bottom: calc(96px + env(safe-area-inset-bottom));
+  right: 16px;
+}
+
+.fab-bottom-center {
+  bottom: calc(96px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.fab-bottom-center:active {
+  transform: translateX(-50%) scale(0.92);
+}
+
+/* ==========================================================================
+   Pull-to-Refresh Indicator
+   ========================================================================== */
+
+.pull-indicator {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-out;
+}
+
+.pull-indicator.refreshing {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   Bottom Sheet Styles
+   ========================================================================== */
+
+.bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: var(--card);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-sheet-handle {
+  width: 32px;
+  height: 4px;
+  background: var(--muted-foreground);
+  opacity: 0.3;
+  border-radius: 2px;
+  margin: 8px auto 16px;
+}
+
+.bottom-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+/* ==========================================================================
+   Skeleton Loading (Mobile Optimized)
+   ========================================================================== */
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--muted);
+  border-radius: 0.5rem;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--skeleton-shimmer), transparent);
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ==========================================================================
+   Desktop-Specific Hover States
+   ========================================================================== */
+
+@media (hover: hover) and (pointer: fine) {
+  /* Card hover lift */
+  .hover-lift {
+    transition:
+      transform 0.2s ease-out,
+      box-shadow 0.2s ease-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Button hover scale */
+  .hover-scale:hover {
+    transform: scale(1.02);
+  }
+
+  /* Link underline animation */
+  .hover-underline {
+    position: relative;
+  }
+
+  .hover-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: currentColor;
+    transition: width 0.2s ease-out;
+  }
+
+  .hover-underline:hover::after {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   Keyboard Focus States (Accessibility)
+   ========================================================================== */
+
+/* Visible focus ring for keyboard navigation */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Remove default focus for mouse users */
+.focus-ring:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 1rem;
+  background: var(--background);
+  border: 2px solid var(--ring);
+  border-radius: 0.5rem;
+  z-index: 100;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}

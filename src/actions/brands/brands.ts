@@ -1,0 +1,102 @@
+"use server";
+import type { InputJsonValue } from "@prisma/client/runtime/client";
+import { z } from "zod";
+import type { NullableJsonNullValueInput } from "@/shared/lib/generated/prisma/internal/prismaNamespace";
+import db from "@/shared/lib/prisma";
+import type { TBrand } from "@/shared/types";
+import { uploadImage } from "../product/product-image";
+
+const ValidateUpdateBrand = z.object({
+  id: z.string().min(6),
+  name: z.string().min(3),
+});
+
+export const addBrand = async (
+  brandName: string,
+  userId: string,
+  logo: File,
+  description: string,
+  metadata: NullableJsonNullValueInput | InputJsonValue | undefined,
+) => {
+  if (!brandName.trim()) return { error: "Invalid Data!" };
+
+  try {
+    const result = await db.brand.create({
+      data: {
+        name: brandName,
+        createdById: userId,
+        description,
+        metadata,
+      },
+    });
+
+    const { urls } = await uploadImage(
+      {
+        type: "BRAND",
+        brandId: result.id,
+      },
+      logo,
+    );
+    if (!urls?.[0]) return { error: "Can't Upload Logo!" };
+    await db.brand.update({
+      where: {
+        id: result.id,
+      },
+      data: {
+        logo: urls[0],
+      },
+    });
+    return { res: result };
+  } catch (error) {
+    return { error };
+  }
+};
+
+export const getAllBrands = async () => {
+  try {
+    const result: TBrand[] | null = await db.brand.findMany();
+
+    if (!result) return { error: "Can't Get Data from Database!" };
+    return { res: result };
+  } catch (error) {
+    return { error };
+  }
+};
+
+export const deleteBrand = async (brandID: string) => {
+  if (!brandID || brandID === "") return { error: "Invalid Data!" };
+  try {
+    const result = await db.brand.delete({
+      where: {
+        id: brandID,
+      },
+    });
+
+    if (!result) return { error: "Can't Delete!" };
+    return { res: result };
+  } catch (error) {
+    return { error };
+  }
+};
+
+export const updateBrand = async (data: TBrand) => {
+  if (!ValidateUpdateBrand.safeParse(data).success)
+    return { error: "Invalid Data!" };
+
+  try {
+    const result = await db.brand.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        name: data?.name,
+        description: data?.description,
+      },
+    });
+
+    if (!result) return { error: "Can't Delete!" };
+    return { res: result };
+  } catch (error) {
+    return { error };
+  }
+};

@@ -1,0 +1,59 @@
+import Link from 'next/link';
+import type { TopSellingProductType } from '@/actions/landing-dashboard/profile';
+import ProductCard from '@/domains/product/components/productCard';
+// import {  } from "@/domains/product/constants";
+
+export const TopSellingProductsList = ({
+  TopProducts,
+}: {
+  TopProducts: TopSellingProductType[] | undefined;
+}) => {
+  return (
+    <div className='w-full my-14'>
+      <div className='flex w-full justify-between items-center mb-7'>
+        <h2 className='text-2xl font-medium text-foreground'>Top Selling Products</h2>
+        <Link href='/' className='text-sm sm:text-base w-16'>
+          view all
+        </Link>
+      </div>
+      <div className='w-full overflow-x-auto pb-7 2xl:pb-0'>
+        <div
+          className={`flex justify-between gap-3.5 ${
+            TopProducts && TopProducts.length > 4
+              ? 'overflow-x-scroll [&::-webkit-scrollbar]:h-0'
+              : 'w-full justify-between'
+          }`}
+        >
+          {TopProducts?.map((product, index) => (
+            <ProductCard
+              name={product?.title}
+              visibility={product.visibility}
+              images={product.images}
+              slug={product.slug}
+              id={product.id}
+              basePrice={+product?.basePrice!}
+              specs={
+                product?.productSpecs.map((spec) => ({
+                  id: spec.id,
+                  values: spec.values,
+                  productId: spec.productId,
+                  specGroupId: spec.specGroupId,
+                })) ??
+                ([] as {
+                  id: string;
+                  values: string[];
+                  productId: string;
+                  specGroupId: string;
+                }[])
+              }
+              url={`/shop/${product.slug}`}
+              dealPrice={+product?.salePrice!}
+              key={index}
+              className='max-w-[240px] shrink-0 h-full'
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};

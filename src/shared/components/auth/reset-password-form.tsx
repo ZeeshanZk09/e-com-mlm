@@ -1,0 +1,114 @@
+'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader } from 'lucide-react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import type { z } from 'zod';
+import { resetPassword, verifyCode } from '@/actions/auth/resset-password';
+import { resetPasswordSchema } from '@/shared/lib/schemas';
+import { Button } from '../ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import ErrorAlert from '../ui/error-alert';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import { Input } from '../ui/input';
+import SuccessAlert from '../ui/success-alert';
+import VerifyCode from './verify-code';
+
+type Props = {
+  email: string;
+};
+
+const ResetPasswordForm = ({ email }: Props) => {
+  const [isValid, setIsValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const form = useForm<z.infer<typeof resetPasswordSchema>>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      newPassword: '',
+      confirmPassword: '',
+    },
+  });
+  const onSubmit = async (values: z.infer<typeof resetPasswordSchema>) => {
+    setIsLoading(true);
+    setError('');
+    setSuccess('');
+    try {
+      const res = await resetPassword({
+        password: values.newPassword,
+        confirmPassword: values.confirmPassword,
+        email,
+      });
+      if (res.error) {
+        setError(res.error);
+        return;
+      }
+      if (res.success) {
+        setSuccess(res.success);
+        globalThis.location.href = '/';
+      }
+    } catch {
+      setError('Something went wrong');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  if (isValid) {
+    return (
+      <Card className='w-sm '>
+        <CardHeader className='text-center'>
+          <CardTitle className='text-xl capitalize font-semibold '>Set new password</CardTitle>
+          <SuccessAlert success={success} />
+          <ErrorAlert error={error} />
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 mt-4'>
+              <FormField
+                control={form.control}
+                name='newPassword'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>New password</FormLabel>
+                    <FormControl>
+                      <Input placeholder='password' className='pr-10' type='password' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='confirmPassword'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm password</FormLabel>
+                    <FormControl>
+                      <Input placeholder='password' className='pr-10' type='password' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button className='w-full' disabled={isLoading}>
+                {isLoading ? <Loader className='animate-spin' /> : 'Reset Password '}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <VerifyCode
+      email={email}
+      title='Reset password'
+      onVerify={verifyCode}
+      onSuccess={() => setIsValid(true)}
+    />
+  );
+};
+
+export default ResetPasswordForm;
