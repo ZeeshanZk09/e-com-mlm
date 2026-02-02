@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export const useToggleMenu = (
   initialState: boolean,
-  refElement: React.RefObject<HTMLDivElement>,
-  forceToggle?: boolean, // if true when click on same element it will not toggle
+  refElement: React.RefObject<HTMLDivElement | null>,
+  forceToggle?: boolean // if true when click on same element it will not toggle
 ) => {
   const [isActive, setIsActive] = useState<boolean>(initialState);
 
@@ -23,11 +23,11 @@ export const useToggleMenu = (
     };
 
     if (isActive) {
-      document.addEventListener("click", toggle);
+      document.addEventListener('click', toggle);
     }
 
     return () => {
-      document.removeEventListener("click", toggle);
+      document.removeEventListener('click', toggle);
     };
   }, [isActive, refElement, forceToggle]);
 

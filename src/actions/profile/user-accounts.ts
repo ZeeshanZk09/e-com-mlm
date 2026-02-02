@@ -30,11 +30,19 @@ export const getUser = async () => {
         plusUntil: true,
         createdAt: true,
         updatedAt: true,
+        password: true,
       },
     });
     console.log('accounts: ', userData);
 
-    return userData;
+    // Return user data with hasPassword flag (never expose actual password)
+    return userData
+      ? {
+          ...userData,
+          hasPassword: !!userData.password,
+          password: undefined,
+        }
+      : null;
   } catch (error) {
     console.log('error: ', error);
     return { error: 'Failed to get user accounts' };

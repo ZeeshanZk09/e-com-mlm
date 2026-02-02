@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import type { CollectionType } from '@/actions/landing-dashboard/profile';
+import type { CollectionType } from '@/actions/landing-dashboard/dashboard';
 
 // import { TCollectionCard } from "../../types";
 

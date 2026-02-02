@@ -1,5 +1,5 @@
 import { CircleDollarSignIcon, ShoppingBasketIcon, StarIcon, TagsIcon } from 'lucide-react';
-import { getAdminDashboard, getStoreDashboard } from '@/actions/admin/profile';
+import { getAdminDashboard, getStoreDashboard } from '@/actions/admin/dashboard';
 import OrdersAreaChart from '@/shared/components/OrdersAreaChart';
 import { Avatar, AvatarFallback } from '@/shared/components/ui/avatar';
 import ViewProduct from './_components/view-product';
@@ -7,7 +7,7 @@ import ViewsReport from './_components/views-report';
 
 export default async function AdminDashboard() {
   const { data } = await getAdminDashboard();
-  const { data: dashboardData } = await getStoreDashboard();
+  const dashboardData = await getStoreDashboard();
   console.log('admin dashboard: ', data);
   const cards = [
     {
@@ -23,7 +23,7 @@ export default async function AdminDashboard() {
     { title: 'Total Orders', value: data?.orders, icon: TagsIcon },
     {
       title: 'Total Ratings',
-      value: dashboardData?.ratings.length,
+      value: dashboardData?.data?.ratings.length,
       icon: StarIcon,
     },
   ];
@@ -94,7 +94,7 @@ export default async function AdminDashboard() {
         <h2 className='text-xl sm:text-2xl'>Total Reviews</h2>
 
         <div className='mt-4 sm:mt-5 space-y-4 sm:space-y-0'>
-          {dashboardData?.ratings.map((review, index) => (
+          {dashboardData?.data?.ratings.map((review, index) => (
             <div
               key={index}
               className='flex flex-col sm:flex-row gap-4 sm:gap-5 sm:items-center justify-between py-4 sm:py-6 border-b border-slate-200 text-sm text-slate-600 max-w-4xl'

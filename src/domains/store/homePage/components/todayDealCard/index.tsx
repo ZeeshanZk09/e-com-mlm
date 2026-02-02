@@ -1,6 +1,6 @@
 // import { TodayDeals } from "@/domains/product/constants";
 
-import type { TodaysDealType } from '@/actions/landing-dashboard/profile';
+import type { TodaysDealType } from '@/actions/landing-dashboard/dashboard';
 import { cn } from '@/shared/lib/utils';
 import TodayDealCard from './TodayDealCard';
 

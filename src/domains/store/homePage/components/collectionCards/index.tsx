@@ -1,4 +1,4 @@
-import type { CollectionType } from '@/actions/landing-dashboard/profile';
+import type { CollectionType } from '@/actions/landing-dashboard/dashboard';
 import CollectionCard from './collectionCard';
 
 export const CollectionCards = ({

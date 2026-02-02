@@ -1,26 +1,26 @@
-import type { TBrand } from "@/shared/types";
+import type { TFilters, TListItem } from '../types';
 
-import type { TFilters, TListItem } from "../types";
+type SimpleBrand = { id: string; name: string };
 
 const getBrandsFromProducts = (productList: TListItem[]) => {
   return productList.map((product) => product.brand);
 };
-const removeDuplicatedBrands = (list: TBrand[]) => {
-  const newList: TBrand[] = [];
+const removeDuplicatedBrands = (list: SimpleBrand[]) => {
+  const newList: SimpleBrand[] = [];
   list.forEach((listItem) => {
     const isFind = newList.findIndex((brand) => listItem.id === brand.id);
     if (isFind === -1) newList.push({ id: listItem.id, name: listItem.name });
   });
   return newList;
 };
-const addIsSelectedValueToBrands = (brandList: TBrand[]) => {
+const addIsSelectedValueToBrands = (brandList: SimpleBrand[]) => {
   return brandList.map((b) => ({
     ...b,
     isSelected: true,
   }));
 };
 const generateBrands = (productList: TListItem[]) => {
-  const listOfProductsBrand: TBrand[] = getBrandsFromProducts(productList);
+  const listOfProductsBrand = getBrandsFromProducts(productList);
   const uniqueBrandList = removeDuplicatedBrands(listOfProductsBrand);
   return addIsSelectedValueToBrands(uniqueBrandList);
 };
@@ -56,7 +56,7 @@ export const getFiltersFromProductList = (productsList: TListItem[]) => {
     brands: generateBrands(productsList),
     priceMinMax: getPriceLimit(productsList),
     priceMinMaxLimitation: getPriceLimit(productsList),
-    stockStatus: "all",
+    stockStatus: 'all',
   };
   return newFilter;
 };

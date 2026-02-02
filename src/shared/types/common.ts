@@ -1,12 +1,7 @@
 // import { NameValue, OptionSetType, PageType } from '@prisma/client';
 
-import type { Decimal } from "@prisma/client/runtime/client";
-import type {
-  ProductSpec,
-  Upload,
-  Visibility,
-  Visit,
-} from "../lib/generated/prisma/client";
+import type { Decimal } from '@prisma/client/runtime/client';
+import type { ProductSpec, Upload, Visibility, Visit } from '../lib/generated/prisma/client';
 
 export type TProductCard = {
   name: string;
@@ -78,4 +73,9 @@ export type TSingleSpec = {
   key: string; // Changed from 'value' to 'key' to match updated action signature
 };
 
-export type TAddPageVisit = Visit;
+export type TAddPageVisit = {
+  pageType: 'MAIN' | 'LIST' | 'PRODUCT';
+  deviceResolution?: string;
+  pagePath?: string;
+  productID?: string;
+};

@@ -18,6 +18,7 @@ export type ExtendedUser = Partial<User> & {
   plusUntil?: Date | null;
   createdAt?: Date;
   updatedAt?: Date | null;
+  hasPassword?: boolean;
 };
 
 type Props = {

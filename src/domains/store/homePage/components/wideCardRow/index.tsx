@@ -1,4 +1,4 @@
-import type { CategoryOffer } from '@/actions/landing-dashboard/profile';
+import type { CategoryOffer } from '@/actions/landing-dashboard/dashboard';
 import { WideCard } from './WideCard';
 
 type TProps = {

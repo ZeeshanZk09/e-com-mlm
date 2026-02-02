@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { TopSellingProductType } from '@/actions/landing-dashboard/profile';
+import type { TopSellingProductType } from '@/actions/landing-dashboard/dashboard';
 import ProductCard from '@/domains/product/components/productCard';
 // import {  } from "@/domains/product/constants";
 

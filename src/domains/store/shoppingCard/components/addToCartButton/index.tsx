@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
-import { ShoppingIconFill } from "@/shared/components/icons/svgIcons";
-import type { TCartItem } from "@/shared/types/shoppingCart";
-import { add } from "@/store/shoppingCart";
+import { ShoppingIconFill } from '@/shared/components/icons/svgIcons';
+import type { TCartItem } from '@/shared/types/shoppingCart';
+import { add } from '@/store/shoppingCart';
 
 type TProps = {
   disabled: boolean;
@@ -16,22 +16,22 @@ const AddToCartButton = ({ cartItemData, disabled }: TProps) => {
 
   const handleAddToCart = () => {
     dispatch(add({ ...cartItemData }));
-    document.documentElement.classList.add("noScroll");
+    document.documentElement.classList.add('noScroll');
   };
 
   return (
     <button
       disabled={disabled}
       className={
-        "flex justify-center items-center gap-5 cursor-pointer ml-6 sm:ml-10 text-sm sm:text-lg font-light px-8 sm:px-12 py-2.5 bg-bitex-red-500 rounded-lg text-white transition-all duration-300"
+        'flex justify-center items-center gap-5 cursor-pointer ml-6 sm:ml-10 text-sm sm:text-lg font-light px-8 sm:px-12 py-2.5 bg-bitex-red-500 rounded-lg text-white transition-all duration-300'
       }
       onClick={() => handleAddToCart()}
     >
       {disabled ? (
-        "not Available"
+        'not Available'
       ) : (
         <>
-          <ShoppingIconFill width={16} className="fill-white" />
+          <ShoppingIconFill width={16} className='fill-white' />
           Add to Cart
         </>
       )}
